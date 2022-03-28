@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Remove article{% endblock %}
+
+{% block content %}
+    <h1>Remove article</h1>
+    Title: {{ article.title }} <br>
+    Contents:   {{ article.body }}
+
+    <h2>Are you sure?</h2>
+    <form method="post">
+        <button type="submit">Yes</button>
+        <a href="{{ url_for('top') }}">No</a>
+    </form>
+</body>
+{% endblock %}

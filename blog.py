@@ -21,10 +21,10 @@ URL name = function name in practice
 
 
 @app.route("/")
-def welcome():
+def top():
     return render_template(
-        "welcome.html",
-        cards=db
+        "top.html",
+        articles=db
         )
 
 """ 
@@ -32,12 +32,12 @@ special piece of syntax: <~>
 assume the parameter will be integer, and will be assigned into index parameter
 """
 
-@app.route("/card/<int:index>")
-def card_view(index):
+@app.route("/article/<int:index>")
+def article_view(index):
     try:
-        card = db[index]
-        return render_template("card.html",
-        card=card,
+        article = db[index]
+        return render_template("article.html",
+        article=article,
         index=index,
         max_index=len(db)-1
         )
@@ -49,29 +49,33 @@ def card_view(index):
 request class;
 it retrieve the data submitted via form
 """
-@app.route('/add_card/', methods=["GET", "POST"])
-def add_card():
+@app.route('/add_article/', methods=["GET", "POST"])
+def add_article():
     if request.method == "POST":
-        card = {"question": request.form['question'],
-                "answer": request.form['answer']}
-        db.append(card)
+        article = {
+                "date": request.form['date'],
+                "title": request.form['title'],
+                "body": request.form['body']
+                }
+        db.append(article)
         save_db()
-        return redirect(url_for('card_view', index=len(db)-1))
+        return redirect(url_for('article_view', index=len(db)-1))
     else:
-        return render_template("add_card.html")
+        return render_template("add_article.html")
 
 
-@app.route('/remove_card/<int:index>', methods=["GET", "POST"])
+@app.route('/remove_aritcle/<int:index>', methods=["GET", "POST"])
 def remove_card(index):
     try:
         if request.method == "POST":
             del db[index]
             save_db()
-            return redirect(url_for('welcome'))
+            return redirect(url_for('top'))
         else:
-            return render_template("remove_card.html", card=db[index])
+            return render_template("remove_article.html", article=db[index])
     except IndexError:
         abort(404)
+
 
 """ REST-API """
 @app.route("/api/card/")

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Top page{% endblock %}
+
+{% block content %}
+    <h1>Blog Title</h1>
+    <p>
+        This is a personal blog app.
+    </p>
+
+    <h2>Article</h2>
+    <ul>
+        {% for article in articles %}
+            <li>
+                {{ article.date }}
+                <a href="{{ url_for('article_view', index=loop.index0)}}">
+                    {{ article.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
